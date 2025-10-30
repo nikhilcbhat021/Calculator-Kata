@@ -1,19 +1,20 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import com.calculator.Calculator;
 
 public class CalculatorTest {
 
-    private Calculator calcInstance;
-    
+    private final Calculator calcInstance;
+
     public CalculatorTest() {
-        this.calcInstance = new Calculator("");
+        this.calcInstance = new Calculator();
     }
 
     @Test
-    public void inptValidation(String input) {
-        // assertEquals();
-        // System.out.println("Test Done!");
-        // return true;
+    void testSimpleEmptyInputString() {
+        System.out.println("testSimpleEmptyInputString , NIKHIL c bhat");
+        assertEquals(0, calcInstance.add(""), 0);
     }
+
 }
