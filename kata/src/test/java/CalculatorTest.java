@@ -38,18 +38,35 @@ public class CalculatorTest {
     }
 
     @Test
-    @DisplayName("testNegativeNumInputString")
+    @DisplayName("testSingleNegativeNumInputString")
     void testNegativeNumInputString() {
         final int negativeNum = -3;
-        String expected = "negative numbers not allowed "+negativeNum;
-
         IllegalArgumentException e = assertThrows(
             IllegalArgumentException.class, 
             () -> { 
                 calcInstance.add("1,"+negativeNum+" , 3"); 
             }
         );
+        String expected = "negative numbers not allowed "+negativeNum;
 
+        assertEquals(expected, e.getMessage());
+    }
+
+    @Test
+    @DisplayName("testMultipleNegativeNumInputString")
+    void testMultipleNegativeNumInputString() {
+        final String negativeNums = "-1,-2\n-3\n-4";
+        IllegalArgumentException e = assertThrows(
+            IllegalArgumentException.class, 
+            () -> { 
+                calcInstance.add("1,"+negativeNums+" , 3"); 
+            }
+        );
+            
+        final String commaSeperatedNegatives = String.join(",",negativeNums.split("[,\\n]"));
+
+        String expected = "negative numbers not allowed "+commaSeperatedNegatives;
+        System.err.println(e.getMessage());
         assertEquals(expected, e.getMessage());
     }
 
