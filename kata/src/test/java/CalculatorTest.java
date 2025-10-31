@@ -53,6 +53,17 @@ public class CalculatorTest {
     }
 
     @Test
+    @DisplayName("testInvalidInputString")
+    void testInvalidInputString() {
+        assertThrows(
+            NumberFormatException.class, 
+            () -> { 
+                calcInstance.add("1,a, 3"); 
+            }
+        );
+    }
+
+    @Test
     @DisplayName("testMultipleNegativeNumInputString")
     void testMultipleNegativeNumInputString() {
         final String negativeNums = "-1,-2\n-3\n-4";
@@ -74,8 +85,45 @@ public class CalculatorTest {
      * Delimiter tests
      */
     @Test
-    @DisplayName("testWithNewlineInputString")
-    void testWithNewlineInputString() {
+    @DisplayName("testWithNewline")
+    void testWithNewline() {
         assertEquals(9, calcInstance.add("1\n1\n 3,4"), 0);
+    }
+
+    @Test
+    @DisplayName("testCustomSingleShortDelimiter")
+    void testCustomSingleShortDelimiter() {
+        assertEquals(5, calcInstance.add("//;\n1;1; 1;1;1"), 0);
+        assertEquals(5, calcInstance.add("//*\n1*1* 1*1*1"), 0);
+    }
+
+    @Test
+    @DisplayName("testCustomSingleLongDelimiter")
+    void testCustomSingleLongDelimiter() {
+        assertEquals(13, calcInstance.add("//**\n1**11**1"), 0);
+    }
+
+    @Test
+    @DisplayName("testCustomMultipleShortDelimiters")
+    void testWithCustomMultipleDelimiters() {
+        assertEquals(14, calcInstance.add("//[*][\\n]\n1*11\\n1*1"), 0);
+        assertEquals(17, calcInstance.add("//[*][|][\\n]\n1|2|12\\n1*1"), 0);
+    }
+    
+    @Test
+    @DisplayName("testCustomMultipleLongDelimiters")
+    void testCustomMultipleLongDelimiters() {
+        assertEquals(14, calcInstance.add("//[***][||]\n1***11***1||1"), 0);
+        assertEquals(17, calcInstance.add("//[*][|*][\\n]\n1|*2|*12*1\\n1"), 0);
+    }
+
+    /**
+     * Large Numbers Tests
+     */
+    @Test
+    @DisplayName("testLargeNumbers")
+    void testLargeNumbers() {
+        assertEquals(1003, calcInstance.add("1,1000,1\n1"), 0);
+        assertEquals(3, calcInstance.add("1,1001,1\n1"), 0);
     }
 }
